@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>СОӨЖ №9 — Сән Әлемі</title>
+  <style>
+    :root {
+      --bg1: #f8f2ee;
+      --bg2: #efe6df;
+      --bg3: #e7ddd7;
+      --text: #2f2927;
+      --muted: #6d5f5a;
+      --white: rgba(255,255,255,0.72);
+      --glass: rgba(255,255,255,0.48);
+      --shadow: 0 18px 50px rgba(70, 49, 42, 0.12);
+      --green: #dcedc8;
+      --orange: #ffd9b8;
+      --blue: #cfe9e5;
+      --purple: #e8d6eb;
+      --rose: #f2d9d9;
+      --accent: #5a6b67;
+      --accent2: #9b6f63;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #faf5f1 0%, transparent 30%),
+        radial-gradient(circle at bottom right, #e7f1ee 0%, transparent 28%),
+        linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+
+    .bg-float {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(6px);
+      opacity: 0.45;
+      animation: floatBlob 12s ease-in-out infinite;
+    }
+
+    .blob:nth-child(1) {
+      width: 280px; height: 280px; background: #e6cfc4; top: -60px; left: -40px;
+    }
+    .blob:nth-child(2) {
+      width: 360px; height: 360px; background: #c7ddd8; right: -120px; top: 60px; animation-delay: 2s;
+    }
+    .blob:nth-child(3) {
+      width: 220px; height: 220px; background: #ebdad4; bottom: 40px; left: 18%; animation-delay: 4s;
+    }
+    .blob:nth-child(4) {
+      width: 180px; height: 180px; background: #d9ebe6; bottom: -30px; right: 16%; animation-delay: 1s;
+    }
+
+    @keyframes floatBlob {
+      0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+      50% { transform: translateY(-18px) translateX(14px) scale(1.04); }
+    }
+
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 46px 54px 100px;
+      display: none;
+      opacity: 0;
+      transform: translateY(20px) scale(0.985);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .slide.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      animation: slideIn 0.75s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .wrap {
+      width: min(1240px, 100%);
+      margin: 0 auto;
+    }
+
+    .glass {
+      background: var(--white);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .cover-box {
+      min-height: calc(100vh - 146px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 42px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover-box::before,
+    .cover-box::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.26);
+      filter: blur(4px);
+      animation: orbit 10s ease-in-out infinite;
+    }
+
+    .cover-box::before {
+      width: 220px; height: 220px; top: -40px; right: -40px;
+    }
+
+    .cover-box::after {
+      width: 180px; height: 180px; bottom: -30px; left: -20px; animation-delay: 2s;
+    }
+
+    @keyframes orbit {
+      0%, 100% { transform: translate(0,0); }
+      50% { transform: translate(10px, -12px); }
+    }
+
+    .eyebrow {
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      font-weight: 700;
+      margin-bottom: 16px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .cover-title {
+      font-size: clamp(32px, 4vw, 56px);
+      line-height: 1.15;
+      font-weight: 800;
+      margin: 0 0 18px;
+      animation: fadeUp 1s ease both;
+    }
+
+    .cover-topic {
+      font-size: clamp(22px, 2.6vw, 34px);
+      line-height: 1.35;
+      font-weight: 700;
+      color: #4c403b;
+      margin: 18px 0 26px;
+      animation: fadeUp 1.15s ease both;
+    }
+
+    .cover-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 24px;
+      text-align: left;
+      animation: fadeUp 1.3s ease both;
+    }
+
+    .meta-item {
+      padding: 18px 20px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 22px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .meta-item:hover {
+      transform: translateY(-6px) rotate(-0.4deg);
+      box-shadow: 0 18px 30px rgba(60,40,35,0.12);
+    }
+
+    .date {
+      margin-top: 20px;
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--muted);
+      animation: fadeUp 1.45s ease both;
+    }
+
+    h1 {
+      font-size: clamp(30px, 3.5vw, 50px);
+      line-height: 1.15;
+      margin: 0 0 14px;
+      font-weight: 800;
+    }
+
+    h2 {
+      font-size: clamp(26px, 3vw, 42px);
+      line-height: 1.15;
+      margin: 0 0 12px;
+      font-weight: 800;
+    }
+
+    .lead {
+      font-size: clamp(18px, 1.7vw, 24px);
+      line-height: 1.7;
+      color: #493f3c;
+      margin-bottom: 24px;
+      max-width: 1100px;
+      animation: fadeUp 0.95s ease both;
+    }
+
+    .section-card {
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-card::before {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      background: rgba(255,255,255,0.22);
+      border-radius: 50%;
+      top: -60px;
+      right: -40px;
+    }
+
+    .grid-2, .grid-3, .grid-4 {
+      display: grid;
+      gap: 22px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+
+    .card {
+      position: relative;
+      padding: 24px 24px 22px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.72);
+      box-shadow: var(--shadow);
+      transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+      overflow: hidden;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: auto -30% -60% auto;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      transition: transform 0.45s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-12px) scale(1.02) rotate(-0.4deg);
+      box-shadow: 0 24px 44px rgba(61, 42, 36, 0.16);
+      background: rgba(255,255,255,0.84);
+    }
+
+    .card:hover::after {
+      transform: translate(-16px, -12px) scale(1.08);
+    }
+
+    .tone-green { background: linear-gradient(180deg, rgba(220,237,200,0.93), rgba(231,245,219,0.86)); }
+    .tone-orange { background: linear-gradient(180deg, rgba(255,217,184,0.94), rgba(255,232,211,0.86)); }
+    .tone-blue { background: linear-gradient(180deg, rgba(207,233,229,0.94), rgba(224,244,241,0.86)); }
+    .tone-purple { background: linear-gradient(180deg, rgba(232,214,235,0.94), rgba(241,229,244,0.87)); }
+    .tone-rose { background: linear-gradient(180deg, rgba(242,217,217,0.93), rgba(249,233,233,0.86)); }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    .card p, .card li {
+      font-size: 20px;
+      line-height: 1.65;
+      color: #433936;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 22px;
+    }
+
+    .swot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+      margin-top: 14px;
+    }
+
+    .swot-box {
+      min-height: 320px;
+    }
+
+    .swot-box strong {
+      font-size: 22px;
+    }
+
+    .conclusion {
+      margin-top: 20px;
+      padding: 22px 24px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.72);
+      box-shadow: var(--shadow);
+      font-size: 21px;
+      line-height: 1.7;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      animation: fadeUp 1s ease both;
+    }
+
+    .conclusion:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 22px 40px rgba(61, 42, 36, 0.15);
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .badge {
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      box-shadow: 0 12px 24px rgba(60,40,35,0.08);
+      font-size: 17px;
+      font-weight: 700;
+      color: #514541;
+      transition: transform 0.3s ease, background 0.3s ease;
+      animation: fadeUp 1.1s ease both;
+    }
+
+    .badge:hover {
+      transform: translateY(-6px) scale(1.04);
+      background: rgba(255,255,255,0.92);
+    }
+
+    .nav {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 16px 30px rgba(56, 39, 34, 0.15);
+      z-index: 9999;
+      pointer-events: auto;
+      touch-action: manipulation;
+    }
+
+    .nav button {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      min-width: 110px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), #728782);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+      box-shadow: 0 10px 20px rgba(75, 96, 90, 0.24);
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      pointer-events: auto;
+    }
+
+    .nav button:hover {
+      transform: translateY(-4px) scale(1.03);
+      filter: brightness(1.03);
+      box-shadow: 0 18px 28px rgba(75, 96, 90, 0.28);
+    }
+
+    .counter {
+      min-width: 90px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: #4c413d;
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(90,107,103,0.25);
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      width: 26px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .hint {
+      position: fixed;
+      right: 16px;
+      top: 16px;
+      z-index: 50;
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.68);
+      box-shadow: 0 12px 24px rgba(59,40,34,0.1);
+      font-size: 14px;
+      color: #5f5450;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      animation: fadeUp 1.2s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 1024px) {
+      .grid-2, .grid-3, .grid-4, .swot-grid, .cover-meta {
+        grid-template-columns: 1fr;
+      }
+      .slide { padding: 28px 18px 110px; }
+      .cover-box { min-height: auto; }
+      .card p, .card li, .conclusion { font-size: 18px; }
+      .card h3 { font-size: 24px; }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        width: calc(100% - 16px);
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 10px;
+        bottom: 8px;
+        flex-wrap: wrap;
+      }
+      .nav button {
+        min-width: auto;
+        padding: 12px 14px;
+        font-size: 14px;
+      }
+      .counter { min-width: 60px; font-size: 14px; }
+      .dots { width: 100%; order: 5; }
+      .hint { display: none; }
+      .section-card { padding: 24px 18px; }
+      .meta-item { padding: 14px 16px; }
+    }
+      .nav button { min-width: auto; padding: 11px 14px; }
+      .hint { display: none; }
+      .section-card { padding: 24px 18px; }
+      .meta-item { padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-float">
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+  </div>
+
+  <div class="hint">→ / ← пернелерімен де ауысады</div>
+
+  <main class="deck">
+    <section class="slide active">
+      <div class="wrap">
+        <div class="cover-box glass">
+          <div>
+            <div class="eyebrow">ҚАЗАҚСТАН РЕСПУБЛИКАСЫ ҒЫЛЫМ ЖӘНЕ ЖОҒАРЫ БІЛІМ МИНИСТРЛІГІ</div>
+            <div class="lead" style="max-width: 980px; margin: 0 auto 10px; font-weight:700;">«Қ.И. Сәтбаев атындағы Қазақ ұлттық техникалық зерттеу университеті» коммерциялық емес акционерлік қоғамы</div>
+            <div class="lead" style="max-width: 980px; margin: 0 auto;">Институт: <strong>Е.А. Түркебаев атындағы Жобаларды басқару</strong><br>Кафедра: <strong>Менеджмент және математикалық экономика</strong></div>
+
+            <h1 class="cover-title">БІЛІМ АЛУШЫНЫҢ №9 СОӨЖ</h1>
+            <div class="cover-topic">Тақырыбы: «Сән Әлемі» тігін цехының маркетингтік зерттеуі және SWOT–талдауы</div>
+            <div class="lead" style="margin: 0 auto; font-weight:700;">6B07215 білім беру бағдарламасының шифрі</div>
+
+            <div class="cover-meta">
+              <div class="meta-item"><strong>Орындаған:</strong><br>Абдумутан Назым, Бейсен Айнар</div>
+              <div class="meta-item"><strong>Тексерген:</strong><br>Кудайбергенова А.А.</div>
+            </div>
+
+            <div class="date">«8» 04 2026 ж.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="wrap">
+        <div class="section-card glass">
+          <h2>Стартап жоба идеясы</h2>
+          <div class="lead">
+            <strong>«Сән Әлемі»</strong> — бұл күнделікті киімдер, мектеп формасы және арнайы тапсырыспен тігілетін киімдер ұсынатын шағын тігін цехы. Біздің бизнес дайын киім сатумен ғана шектелмейді, керісінше әр клиенттің өлшеміне, талғамына және сұранысына сай жеке өнім дайындайды. Осы арқылы біз сапаны, ыңғайлылықты және ерекше стильді біріктіреміз.
+          </div>
+          <div class="grid-3">
+            <div class="card tone-rose">
+              <h3>Негізгі өнімдер</h3>
+              <ul>
+                <li>Күнделікті киімдер</li>
+                <li>Мектеп формасы</li>
+                <li>Арнайы тапсырыспен тігілетін киімдер</li>
+                <li>Ұлттық және корпоратив киімдер</li>
+              </ul>
+            </div>
+            <div class="card tone-blue">
+              <h3>Бизнес артықшылығы</h3>
+              <ul>
+                <li>Әр клиентке жеке көзқарас</li>
+                <li>Өлшемге дәл келетін өнім</li>
+                <li>Сапалы мата және ұқыпты тігін</li>
+                <li>Сұранысқа бейімделе алу</li>
+              </ul>
+            </div>
+            <div class="card tone-orange">
+              <h3>Жұмыс құрылымы</h3>
+              <ul>
+                <li>Цехта 10 адам қызмет етеді</li>
+                <li>Әр қызметкердің міндеті нақты бөлінген</li>
+                <li>Тапсырыс жүйелі түрде орындалады</li>
+                <li>Командалық жұмысқа басымдық беріледі</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="wrap">
+        <div class="section-card glass">
+          <h2>Болашақ клиенттерді сипаттау</h2>
+          <div class="lead">
+            «Сән Әлемі» тігін цехының болашақ клиенттері — сапалы, ыңғайлы және әдемі киім іздейтін адамдар. Олар дайын киімнен гөрі өз өлшеміне сай, өз талғамына сәйкес тігілген киімді қалайды. Мұндай клиенттер үшін тек баға емес, өнімнің сапасы, тігістің ұқыптылығы және қызмет көрсету деңгейі де маңызды.
+          </div>
+          <div class="grid-2">
+            <div class="card tone-green">
+              <h3>Клиенттердің негізгі топтары</h3>
+              <ul>
+                <li>Мектеп формасына мұқтаж ата-аналар мен оқушылар</li>
+                <li>Күнделікті сәнді киім іздейтін әйелдер</li>
+                <li>Мерекелік немесе ерекше киім тіккізетін клиенттер</li>
+                <li>Ұйымдарға униформа қажет ететін шағын мекемелер</li>
+              </ul>
+            </div>
+            <div class="card tone-purple">
+              <h3>Клиент нені бағалайды?</h3>
+              <ul>
+                <li>Өлшемге дәл келуін</li>
+                <li>Сапалы мата мен әдемі пішімді</li>
+                <li>Тапсырыстың уақытында дайын болуын</li>
+                <li>Сыпайы қызмет пен сенімді қарым-қатынасты</li>
+              </ul>
+            </div>
+          </div>
+          <div class="badge-row">
+            <div class="badge">Сапа</div>
+            <div class="badge">Жеке тапсырыс</div>
+            <div class="badge">Уақытында орындау</div>
+            <div class="badge">Клиентке ыңғайлылық</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="wrap">
+        <div class="section-card glass">
+          <h2>Маркетингтік зерттеу қорытындысы</h2>
+          <div class="lead">
+            Өз бетімізше жүргізілген маркетингтік зерттеу барысында тігін саласында сұраныстың тұрақты екені анықталды. Әсіресе мектеп формасы, арнайы тапсырыспен тігілетін киім және әйелдерге арналған күнделікті сәнді киімге қызығушылық жоғары. Қазіргі таңда клиенттер тек тауарды ғана емес, ыңғайлы қызметті, онлайн байланыс мүмкіндігін және сапаға кепілдікті де күтеді.
+          </div>
+          <div class="grid-3">
+            <div class="card tone-blue">
+              <h3>Сұраныс бар бағыттар</h3>
+              <ul>
+                <li>Мектеп формасы</li>
+                <li>Әйелдерге арналған күнделікті киім</li>
+                <li>Мерекелік және арнайы тапсырыс киімдері</li>
+              </ul>
+            </div>
+            <div class="card tone-rose">
+              <h3>Клиентке маңызды нәрсе</h3>
+              <ul>
+                <li>Баға мен сапаның сәйкестігі</li>
+                <li>Өлшемге сай тігілуі</li>
+                <li>Жылдам байланыс және қолжетімділік</li>
+              </ul>
+            </div>
+            <div class="card tone-orange">
+              <h3>Қорытынды шешім</h3>
+              <ul>
+                <li>Instagram және WhatsApp арқылы сату тиімді</li>
+                <li>Жеке тапсырыс — басты артықшылық</li>
+                <li>Тұрақты клиент базасын жинауға мүмкіндік жоғары</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="wrap">
+        <div class="section-card glass">
+          <h2>Мақсатты аудитория</h2>
+          <div class="lead">
+            Біздің мақсатты аудитория — Алматы қаласында тұратын, стиль мен сапаға мән беретін, өзіне сай киім таңдауға тырысатын адамдар. Бұл аудиторияны географиялық, демографиялық, психографиялық және мінез-құлық ерекшеліктері бойынша сипаттауға болады.
+          </div>
+          <div class="grid-4">
+            <div class="card tone-green">
+              <h3>Географиялық</h3>
+              <ul>
+                <li>Алматы қаласының тұрғындары</li>
+                <li>Қала ішінде цехқа жақын аудандар</li>
+                <li>Жеткізу мен келіп көруге ыңғайлы клиенттер</li>
+              </ul>
+            </div>
+            <div class="card tone-orange">
+              <h3>Демографиялық</h3>
+              <ul>
+                <li>16–45 жас аралығындағы адамдар</li>
+                <li>Негізінен әйелдер аудиториясы</li>
+                <li>Орташа табысы бар тұрғындар</li>
+                <li>Оқушылар, студенттер, жұмыс істейтін адамдар</li>
+              </ul>
+            </div>
+            <div class="card tone-blue">
+              <h3>Психографиялық</h3>
+              <ul>
+                <li>Сәнге қызығады</li>
+                <li>Сапа мен ұқыптылықты бағалайды</li>
+                <li>Ерекше және жеке стиль қалайды</li>
+              </ul>
+            </div>
+            <div class="card tone-purple">
+              <h3>Мінез-құлық</h3>
+              <ul>
+                <li>Көбіне әлеуметтік желі арқылы іздейді</li>
+                <li>Ұнаса, қайта тапсырыс береді</li>
+                <li>Арнайы жағдайларға киім тіккізуді ұнатады</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="wrap">
+        <div class="section-card glass">
+          <h2>SWOT – талдау</h2>
+          <div class="lead">
+            SWOT талдау — бизнестің ішкі және сыртқы жағдайын толық бағалауға көмектесетін әдіс. Бұл талдау арқылы «Сән Әлемі» тігін цехының қандай артықшылықтары бар екенін, қандай әлсіз тұстарын күшейту керек екенін, болашақта қандай мүмкіндіктерді пайдалана алатынын және қандай қатерлерге алдын ала дайын болу қажет екенін көруге болады.
+          </div>
+
+          <div class="card tone-rose" style="padding:18px; margin-bottom:22px; text-align:center;">
+            <img src="data:image/png;base64,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" alt="SWOT кестесі" style="width:100%; max-width:860px; border-radius:22px; box-shadow:0 18px 35px rgba(0,0,0,0.12); transition:transform 0.35s ease, box-shadow 0.35s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 24px 42px rgba(0,0,0,0.18)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 18px 35px rgba(0,0,0,0.12)'">
+            <div style="margin-top:12px; font-size:18px; color:#5a4f4a; font-weight:600;">Суреттегі SWOT үлгісі біздің талдау құрылымына негіз болды</div>
+          </div>
+
+          <div class="swot-grid">
+            <div class="card swot-box tone-green">
+              <h3>Мықты жақтар</h3>
+              <ul>
+                <li>«Сән Әлемі» әр клиентке жеке тапсырыспен жұмыс істейді, сондықтан клиент өз өлшеміне, талғамына және қажеттілігіне сай киім ала алады.</li>
+                <li>Өнім сапасына ерекше көңіл бөлінеді: матаны таңдау, пішу, тігу және үтіктеу жұмыстары бір жүйемен жүргізіледі.</li>
+                <li>Цехта 10 адамнан тұратын нақты команда бар, әр қызметкердің міндеті бөлінген, бұл жұмыстың тәртіппен орындалуына көмектеседі.</li>
+                <li>Мектеп формасы, күнделікті киім және арнайы тапсырыс секілді бірнеше бағыт бар, яғни ассортимент әртүрлі.</li>
+                <li>Клиентпен тікелей байланыс жасауға болады, бұл сенімділік пен тұрақты клиент жинауға мүмкіндік береді.</li>
+              </ul>
+            </div>
+            <div class="card swot-box tone-orange">
+              <h3>Әлсіз жақтар</h3>
+              <ul>
+                <li>Бизнес жаңа болғандықтан, брендтің танымалдығы әзірге төмен, көпшілік әлі толық біле бермейді.</li>
+                <li>Жарнама мен онлайн жылжыту тұрақты түрде жүргізілмесе, клиент тарту қарқыны баяулауы мүмкін.</li>
+                <li>Бастапқы капитал шектеулі болса, заманауи тігін құралдарын көбейтуге немесе өндірісті кеңейтуге қиындық туады.</li>
+                <li>Тапсырыс саны бір уақытта көбейіп кетсе, орындау мерзімі ұзарып, жұмысқа салмақ түсуі ықтимал.</li>
+                <li>Шағын цех болғандықтан, үлкен көлемдегі тапсырыстарды бірден қабылдау мүмкіндігі шектеулі болуы мүмкін.</li>
+              </ul>
+            </div>
+            <div class="card swot-box tone-blue">
+              <h3>Мүмкіндіктер</h3>
+              <ul>
+                <li>Instagram, TikTok, WhatsApp сияқты платформалар арқылы брендті тез танытып, жаңа клиенттер тартуға болады.</li>
+                <li>Мектеп формасына маусым сайын тұрақты сұраныс бар, бұл тұрақты табыс көзін қалыптастырады.</li>
+                <li>Болашақта ұлттық киім, мерекелік көйлек, корпоратив форма секілді бағыттарды қосып, бизнес аясын кеңейтуге болады.</li>
+                <li>Сапалы қызмет көрсету арқылы тұрақты клиент базасын қалыптастырып, ауызша жарнама арқылы танымалдықты өсіруге мүмкіндік бар.</li>
+                <li>Онлайн тапсырыс қабылдауды дамытып, қала ішіндегі жеткізу қызметін енгізу арқылы бәсекелік артықшылық алуға болады.</li>
+              </ul>
+            </div>
+            <div class="card swot-box tone-purple">
+              <h3>Қатерлер</h3>
+              <ul>
+                <li>Нарықта дайын киім дүкендері мен басқа тігін цехтары көп, сондықтан бәсекелестік жоғары.</li>
+                <li>Мата, жіп, фурнитура бағасының өсуі өнімнің өзіндік құнын көтеріп, бағаға әсер етуі мүмкін.</li>
+                <li>Экономикалық жағдай тұрақсыз болса, кейбір клиенттер арнайы тапсырысқа ақша жұмсауды азайтуы ықтимал.</li>
+                <li>Егер тапсырыс уақытында орындалмаса немесе сапа төмендесе, клиент сенімі азайып, беделге нұқсан келеді.</li>
+                <li>Әлеуметтік желідегі бәсекелестердің белсенді жарнамасы клиенттерді өзіне тартып әкетуі мүмкін.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="conclusion">
+            <strong>Толық қорытынды:</strong> «Сән Әлемі» тігін цехының SWOT талдауы көрсеткендей, бұл бизнестің ең басты күші — сапалы тігін, жеке тапсырысқа бейімделу және клиентпен тікелей жұмыс істеу мүмкіндігі. Әлсіз тұсы — жаңа бренд ретінде танымалдықтың аздығы мен жарнаманың жеткіліксіздігі. Бірақ осы әлсіз жақтарды әлеуметтік желілерді дұрыс пайдалану, тұрақты клиент базасын қалыптастыру және қызмет сапасын сақтап қалу арқылы күшейтуге болады. Егер бизнес өз мүмкіндіктерін дұрыс қолданса, әсіресе мектеп формасы, арнайы тапсырыс және онлайн сатылым бағытын дамытса, онда «Сән Әлемі» болашақта табысты әрі тұрақты кәсіпке айнала алады.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="wrap">
+        <div class="section-card glass" style="text-align:center; min-height: calc(100vh - 150px); display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <div class="eyebrow">Қорытынды бөлім</div>
+          <h1>Назарларыңызға рақмет!</h1>
+          <div class="lead" style="max-width: 900px; margin: 0 auto 20px;">
+            «Сән Әлемі» тігін цехы — сапа мен стильді үйлестіретін, сұранысқа сай дамуға қабілетті шағын бизнес. Дұрыс маркетингтік жоспар, нақты аудитория және мықты қызмет көрсету арқылы бұл жоба тұрақты табысқа жете алады.
+          </div>
+          <div class="badge-row" style="justify-content:center;">
+            <div class="badge">Сапа</div>
+            <div class="badge">Стиль</div>
+            <div class="badge">Жеке тапсырыс</div>
+            <div class="badge">Даму мүмкіндігі</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="nav">
+    <button onclick="prevSlide()">← Артқа</button>
+    <div class="counter" id="counter">1 / 7</div>
+    <div class="dots" id="dots"></div>
+    <button onclick="toggleAuto()" id="autoBtn">⏸ Пауза</button>
+    <button onclick="nextSlide()">Келесі →</button>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('counter');
+    const dotsWrap = document.getElementById('dots');
+    const autoBtn = document.getElementById('autoBtn');
+    let current = 0;
+    let auto = true;
+    let timer;
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => {
+        current = i;
+        showSlide(current);
+        restartAuto();
+      });
+      dotsWrap.appendChild(dot);
+    });
+
+    function updateDots() {
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+      counter.textContent = `${index + 1} / ${slides.length}`;
+      updateDots();
+    }
+
+    function nextSlide() {
+      current = (current + 1) % slides.length;
+      showSlide(current);
+    }
+
+    function prevSlide() {
+      current = (current - 1 + slides.length) % slides.length;
+      showSlide(current);
+    }
+
+    function startAuto() {
+      timer = setInterval(nextSlide, 7000);
+    }
+
+    function stopAuto() {
+      clearInterval(timer);
+    }
+
+    function restartAuto() {
+      if (!auto) return;
+      stopAuto();
+      startAuto();
+    }
+
+    function toggleAuto() {
+      auto = !auto;
+      if (auto) {
+        autoBtn.textContent = '⏸ Пауза';
+        startAuto();
+      } else {
+        autoBtn.textContent = '▶ Авто';
+        stopAuto();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { nextSlide(); restartAuto(); }
+      if (e.key === 'ArrowLeft') { prevSlide(); restartAuto(); }
+    });
+
+    let startX = 0;
+    const navEl = document.querySelector('.nav');
+    document.addEventListener('touchstart', (e) => {
+      if (navEl.contains(e.target)) return;
+      startX = e.touches[0].clientX;
+    }, {passive:true});
+    document.addEventListener('touchend', (e) => {
+      if (navEl.contains(e.target)) return;
+      const endX = e.changedTouches[0].clientX;
+      const diff = endX - startX;
+      if (Math.abs(diff) > 50) {
+        if (diff < 0) nextSlide();
+        else prevSlide();
+        restartAuto();
+      }
+    }, {passive:true});
+
+    document.querySelectorAll('.nav button, .dot').forEach(el => {
+      el.addEventListener('touchend', (e) => {
+        e.stopPropagation();
+      }, {passive:true});
+    });
+
+    showSlide(0);
+    startAuto();
+  </script>
+</body>
+</html>
